@@ -27,4 +27,6 @@ urlpatterns = [
         ),
         name="book",
     ),
+    path("category", views.CategoryView.as_view({"get": "list"}), name="categories"),
+    path("authors", views.AuthorView.as_view({"get": "list"}), name="authors"),
 ]
