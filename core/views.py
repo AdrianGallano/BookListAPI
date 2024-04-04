@@ -11,7 +11,7 @@ class BookView(ViewSet):
     def retrieve(self, request, pk=None):
         try:
             book = Book.objects.get(id=pk)
-            serialized_book = BookSerializer(book)
+            serialized_book = BookSerializer(book, context={"request":request})
             return Response(serialized_book.data, status=status.HTTP_200_OK)
         except Exception as e:
             return Response({"error": "true", "message": str(e)}, status=status.HTTP_404_NOT_FOUND)
@@ -19,7 +19,7 @@ class BookView(ViewSet):
     def list(self, request):
         try:
             books = Book.objects.select_related("category").all()
-            serialized_books = BookSerializer(books, many=True)
+            serialized_books = BookSerializer(books, many=True, context={"request":request})
 
             return Response(serialized_books.data, status=status.HTTP_200_OK)
         except Exception as e:
@@ -50,9 +50,21 @@ class CategoryView(ViewSet):
         serialized_category = CategorySerializer(categories, many=True)
 
         return Response(serialized_category.data, status=status.HTTP_200_OK)
+    
+    def retrieve(self, request, pk=None):
+        categories = Category.objects.get(pk=pk)
+        serialized_category = CategorySerializer(categories)
+        
+        return Response(serialized_category.data, status=status.HTTP_200_OK)
 
 class AuthorView(ViewSet):
     def list(self, request):
         authors = Author.objects.all()
         serialized_authors = AuthorSerializer(authors, many=True)
         return Response(serialized_authors.data, status=status.HTTP_200_OK)
+    
+    def retrieve(self, request, pk=None):
+        author = Author.objects.get(pk=pk)
+        serialized_author = AuthorSerializer(author)
+        
+        return Response(serialized_author.data, status=status.HTTP_200_OK)

@@ -27,6 +27,16 @@ urlpatterns = [
         ),
         name="book",
     ),
-    path("category", views.CategoryView.as_view({"get": "list"}), name="categories"),
     path("authors", views.AuthorView.as_view({"get": "list"}), name="authors"),
+    path(
+        "authors/<int:pk>",
+        views.AuthorView.as_view({"get": "retrieve"}),
+        name="author-detail",
+    ),
+    path("categories", views.CategoryView.as_view({"get": "list"}), name="categories"),
+    path(
+        "categories/<int:pk>",
+        views.CategoryView.as_view({"get": "retrieve"}),
+        name="category-detail",
+    ),
 ]

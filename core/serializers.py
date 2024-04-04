@@ -14,8 +14,8 @@ class AuthorSerializer(serializers.ModelSerializer):
 
 class BookSerializer(serializers.ModelSerializer):
 
-    author = AuthorSerializer(many=True)
-    category = CategorySerializer()
+    author = serializers.HyperlinkedRelatedField(view_name="core_app:author-detail", read_only=True, many=True)
+    category = serializers.HyperlinkedRelatedField(view_name="core_app:category-detail", read_only=True)
     price_after_tax = serializers.SerializerMethodField(method_name='calculate_price_after_tax')
 
     def calculate_price_after_tax(self, book:Book):
